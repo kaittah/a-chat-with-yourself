@@ -6,7 +6,7 @@ To run:
 
 1. Update src/globals.py to contain a valid OpenAI API key
 2. `pipenv install`
-3. Save downloaded Facebook JSON data as a .zip file in src/store/input
+3. Save downloaded Facebook JSON data as a .zip file in src/store/input. Take the file path and save it as the variable `RAW_FILE_PATH` in src/globals.py
 4. run main.py in the virtual environment
 
 How to download Facebook history: https://www.zapptales.com/en/download-facebook-messenger-chat-history-how-to/

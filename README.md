@@ -1,4 +1,4 @@
-## chat-with-yourself
+## a-chat-with-yourself
 
 Have you ever wanted to talk to your past self? If you use Facebook Messenger to chat and have a good amount of chat history, follow the instructions below!
 

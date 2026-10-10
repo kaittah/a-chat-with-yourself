@@ -2,42 +2,35 @@ import logging
 import re
 import time
 
-import openai
-from openai.error import RateLimitError, ServiceUnavailableError
+from openai import OpenAI, RateLimitError, InternalServerError
 
 from src.globals import OPEN_AI_KEY
 
-openai.api_key=OPEN_AI_KEY
+DEFAULT_MODEL = "gpt-6-luna"
+
+client = OpenAI(api_key=OPEN_AI_KEY)
 
 def get_completion_from_messages(messages, 
-                                 model="gpt-3.5-turbo", 
+                                 model=DEFAULT_MODEL, 
                                  temperature=0, 
                                  max_tokens=2000) -> str:
-    try:
-        response = openai.ChatCompletion.create(
+    def create():
+        return client.chat.completions.create(
             model=model,
             messages=messages,
             temperature=temperature, 
             max_tokens=max_tokens, 
         )
+    try:
+        response = create()
     except RateLimitError:
         time.sleep(21)
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=messages,
-            temperature=temperature, 
-            max_tokens=max_tokens, 
-        )
-    except ServiceUnavailableError:
-        time.sleep(30)
+        response = create()
+    except InternalServerError:
         logging.info('Service unavailable...waiting...')
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=messages,
-            temperature=temperature, 
-            max_tokens=max_tokens, 
-        )
-    return response.choices[0].message["content"]
+        time.sleep(30)
+        response = create()
+    return response.choices[0].message.content
 
 def read_string_to_list(input_string) -> list:
     result = []

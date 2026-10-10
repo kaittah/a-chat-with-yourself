@@ -2,7 +2,7 @@ from dataclasses import dataclass, asdict
 import math
 import random
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from src.llm_utils.chatbots import RetrievalChatBot
 from src.llm_utils.interfaces import CommandLine

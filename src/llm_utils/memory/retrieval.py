@@ -1,15 +1,15 @@
 # Source: https://github.com/mbchang/data-driven-characters
 
-from typing import Any, List, Dict
+from typing import Any, ClassVar, List, Dict
 from langchain.memory import VectorStoreRetrieverMemory
 
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 
 class ConversationVectorStoreRetrieverMemory(VectorStoreRetrieverMemory):
-    input_prefix = "Human"
-    output_prefix = "AI"
-    blacklist = []  # keys to ignore
+    input_prefix: ClassVar[str] = "Human"
+    output_prefix: ClassVar[str] = "AI"
+    blacklist: ClassVar[List[str]] = []  # keys to ignore
 
     def _form_documents(
         self, inputs: Dict[str, Any], outputs: Dict[str, str]

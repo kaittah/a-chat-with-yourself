@@ -4,7 +4,7 @@ import warnings
 
 import pandas as pd
 from pandas.errors import SettingWithCopyWarning
-import scrubadub, scrubadub_spacy
+import scrubadub
 
 from src.llm_utils.interfaces.chat_api import get_completion_from_messages, read_string_to_list
 
@@ -25,7 +25,6 @@ def save_response_to_file(file_name: str, text) -> None:
 
 def scrub_prompt(prompt: str) -> str:
     scrubber = scrubadub.Scrubber(post_processor_list=[scrubadub.post_processors.FilthReplacer(include_count=True)])
-    scrubber.add_detector(scrubadub_spacy.detectors.SpacyEntityDetector)
     clean_text = scrubber.clean(prompt)
     return clean_text
 

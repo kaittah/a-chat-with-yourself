@@ -4,18 +4,21 @@ import faiss
 from tqdm import tqdm
 
 from langchain.chains import ConversationChain
-from langchain.chat_models import ChatOpenAI
-from langchain.docstore import InMemoryDocstore
-from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.memory import (
     ConversationBufferMemory,
     CombinedMemory,
 )
-from langchain.prompts import PromptTemplate
-from langchain.vectorstores import FAISS
+from langchain_community.docstore.in_memory import InMemoryDocstore
+from langchain_community.vectorstores import FAISS
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 from src.llm_utils.memory import ConversationVectorStoreRetrieverMemory
 from src.globals import OPEN_AI_KEY
+from src.llm_utils.interfaces.chat_api import DEFAULT_MODEL
+
+EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_DIM = 1536  # Output dimension of text-embedding-3-small
 
 
 class RetrievalChatBot:
@@ -37,8 +40,8 @@ class RetrievalChatBot:
 
         context_memory = ConversationVectorStoreRetrieverMemory(
             retriever=FAISS(
-                OpenAIEmbeddings(openai_api_key=OPEN_AI_KEY).embed_query,
-                faiss.IndexFlatL2(1536),  # Dimensions of the OpenAIEmbeddings
+                OpenAIEmbeddings(model=EMBEDDING_MODEL, api_key=OPEN_AI_KEY).embed_query,
+                faiss.IndexFlatL2(EMBEDDING_DIM),
                 InMemoryDocstore({}),
                 {},
             ).as_retriever(search_kwargs=dict(k=self.num_context_memories)),
@@ -87,9 +90,9 @@ Current conversation:
 Human: {{{self.input_key}}}
 {character_definition.name}:"""
         )
-        GPT3 = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=OPEN_AI_KEY, temperature=0.1)
+        llm = ChatOpenAI(model=DEFAULT_MODEL, api_key=OPEN_AI_KEY, temperature=0.1)
         chatbot = ConversationChain(
-            llm=GPT3, verbose=False, memory=memory, prompt=prompt,
+            llm=llm, verbose=False, memory=memory, prompt=prompt,
         )
         return chatbot
 

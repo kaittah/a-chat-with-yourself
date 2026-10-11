@@ -13,3 +13,5 @@ How to download Facebook history: https://www.zapptales.com/en/download-facebook
 **Be sure to select JSON as message format instead of HTML and download full message history**
 
 Be very careful with the data you download from Facebook. Do not share it or upload it to any website because it is personal data. Keep this stored locally and remove sensitive information when making a connection to an API.
+
+Note: Data from after 2021 will be harder to export due to message encryption. There are special websites you can go to to decrypt those if you wish.

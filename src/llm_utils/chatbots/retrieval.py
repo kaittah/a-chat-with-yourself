@@ -90,7 +90,7 @@ Current conversation:
 Human: {{{self.input_key}}}
 {character_definition.name}:"""
         )
-        llm = ChatOpenAI(model=DEFAULT_MODEL, api_key=OPEN_AI_KEY, temperature=0.1)
+        llm = ChatOpenAI(model=DEFAULT_MODEL, api_key=OPEN_AI_KEY)
         chatbot = ConversationChain(
             llm=llm, verbose=False, memory=memory, prompt=prompt,
         )

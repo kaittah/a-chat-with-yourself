@@ -12,14 +12,12 @@ client = OpenAI(api_key=OPEN_AI_KEY)
 
 def get_completion_from_messages(messages, 
                                  model=DEFAULT_MODEL, 
-                                 temperature=0, 
-                                 max_tokens=2000) -> str:
+                                 max_completion_tokens=2000) -> str:
     def create():
         return client.chat.completions.create(
             model=model,
             messages=messages,
-            temperature=temperature, 
-            max_tokens=max_tokens, 
+            max_completion_tokens=max_completion_tokens,
         )
     try:
         response = create()
